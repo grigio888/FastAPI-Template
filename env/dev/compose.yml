@@ -1,0 +1,49 @@
+name: app
+
+services:
+  backend:
+    restart: unless-stopped
+    build:
+      context: ../../
+      dockerfile: env/dev/Dockerfile
+      ssh:
+        - default
+    stdin_open: true
+    tty: true
+    environment:
+      - ENVIRONMENT=dev
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    volumes:
+      - ../../src/libs:/app/src/libs
+      - ../../src/apps:/app/src/apps
+      - ../../src/main.py:/app/src/main.py
+      - ../../src/messages.py:/app/src/messages.py
+      - ../../tests:/app/tests
+      - ../../alembic.ini:/app/alembic.ini
+      - ../../pyproject.toml:/app/pyproject.toml
+    networks:
+      - inet
+
+  database:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dev
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - inet
+
+volumes:
+  postgres_data:
+
+networks:
+  inet:
+    driver: bridge
