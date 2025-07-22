@@ -36,7 +36,7 @@ down: ## Stop the API
 	@echo "» Stopping the API container:"
 	@echo "# ----------------------------------------------------------------------- #"
 
-	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml down $(if $(cont),$(cont),backend) -d
+	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml down $(if $(cont),$(cont),backend)
 
 logs: ## Show the API container logs
 	@echo "# ----------------------------------------------------------------------- #"
