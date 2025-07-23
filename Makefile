@@ -29,14 +29,14 @@ up: ## Run the API
 	@echo "» Running the API container:"
 	@echo "# ----------------------------------------------------------------------- #"
 
-	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml up $(if $(cont),$(cont),backend) -d
+	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml up -d
 
 down: ## Stop the API
 	@echo "# ----------------------------------------------------------------------- #"
 	@echo "» Stopping the API container:"
 	@echo "# ----------------------------------------------------------------------- #"
 
-	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml down $(if $(cont),$(cont),backend)
+	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml down
 
 logs: ## Show the API container logs
 	@echo "# ----------------------------------------------------------------------- #"
