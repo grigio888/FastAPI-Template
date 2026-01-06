@@ -1,0 +1,72 @@
+[project]
+name = "mangagrid-backend"
+version = "0.1.0"
+description = "This repository groups all files needed by a generic FastAPI application."
+authors = [
+    { name = "Vinicius Grigio", email = "vinicius_grigio@hotmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "fastapi (>=0.115.6,<0.116.0)",
+    "uvicorn (>=0.34.0)",
+    "python-decouple (>=3.8,<4.0)",
+    "colorama (>=0.4.6,<0.5.0)",
+    "aiohttp (>=3.12.14,<4.0.0)",
+    "pyjwt (>=2.10.1,<3.0.0)",
+    "redis (>=6.2.0,<7.0.0)",
+    "sqlalchemy (>=2.0.41,<3.0.0)",
+    "alembic (>=1.16.4,<2.0.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "python-multipart (>=0.0.20,<0.0.21)",
+    "faker (>=37.5.3,<38.0.0)",
+    "sqladmin (>=0.21.0,<0.22.0)",
+    "pillow (>=11.3.0,<12.0.0)",
+    "requests (>=2.32.5,<3.0.0)",
+    "requests-html (>=0.10.0,<0.11.0)",
+    "yarl (>=1.22.0,<2.0.0)",
+    "lxml[html-clean] (>=6.0.2,<7.0.0)",
+    "celery (>=5.5.3,<6.0.0)",
+    "itsdangerous (>=2.2.0,<3.0.0)",
+    "arrow (>=1.4.0,<2.0.0)",
+    "dateparser (>=1.2.2,<2.0.0)",
+    "fastapi-storages (>=0.3.0,<0.4.0)",
+    "cookiecutter (>=2.6.0,<3.0.0)",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    'def __repr__',
+    'if __name__ == .__main__.:',
+    'if TYPE_CHECKING:',
+]
+
+[tool.coverage.xml]
+output = "tests/coverage.xml"
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0.1"
+
+[tool.poetry.group.test.dependencies]
+httpx = "^0.28.1"
+coverage = "^7.9.2"
+
+[tool.ruff]
+exclude = [
+    "src/libs/database/seeds/__init__.py",
+]
+
+[tool.vulture]
+ignore_names = ["DBBaseModel", "Query", "sessionmaker", "TYPE_CHECKING"]
+min_confidence = 80

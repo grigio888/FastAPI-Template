@@ -1,0 +1,15 @@
+{% extends "email_template.html" %}
+
+{% block title %}Verify your email{% endblock %}
+
+{% block content %}
+    <p>
+        Welcome to {{ app_name }}. <br> Please confirm your email address to finish setting up your account.
+    </p>
+    <p>
+        <a class="button" href="{{ app_url }}/auth/email-confirmation?token={{ token }}">Verify email</a>
+    </p>
+    <p style="color: #9aa4b5; font-size: 14px;">
+        If you did not create an account, you can ignore this email.
+    </p>
+{% endblock %}

@@ -1,0 +1,10 @@
+.env
+-.env.example
+.env.secrets
+-.env.secrets.example
+__pycache__/
+*.pyc
+.DS_Store
+.coverage
+coverage.xml
+.vscode/

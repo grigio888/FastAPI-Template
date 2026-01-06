@@ -1,0 +1,72 @@
+# .pre-commit-config.yaml
+
+minimum_pre_commit_version: "4.0.1"
+
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        description: "Run 'ruff' for extremely fast Python linting"
+        entry: ruff check --fix
+        language: python
+        types_or: [python]
+        args:
+          - "--select=ALL"
+          - "--select=D211"
+          - "--ignore=B006"
+          - "--ignore=B008"
+          - "--ignore=D200"
+          - "--ignore=D202"
+          - "--ignore=D203"
+          - "--ignore=D204"
+          - "--ignore=D210"
+          - "--ignore=D212"
+          - "--ignore=D400"
+          - "--ignore=EM101"
+          - "--ignore=INP001"
+          - "--ignore=FAST002"
+          - "--ignore=FBT001"
+          - "--ignore=FBT002"
+          - "--ignore=G004"
+          - "--ignore=PERF203"
+          - "--ignore=PLR2004"
+          - "--ignore=PLW0603"
+          - "--ignore=RUF006"
+          - "--ignore=S101"
+          - "--ignore=S105"
+          - "--ignore=S107"
+          - "--ignore=SLF001"
+          - "--ignore=TC001"
+          - "--ignore=TC003"
+          - "--ignore=TRY003"
+          - "--ignore=TRY301"
+          - "--ignore=TRY401"
+        exclude: '(^src/libs/database/migrations/.*|^src/libs/cookiecutter/.*)'
+        require_serial: true
+        additional_dependencies: ["ruff==0.9.0"]
+
+      - id: ruff-format
+        name: ruff-format
+        description: "Run 'ruff format' for extremely fast Python formatting"
+        entry: ruff format
+        language: python
+        types_or: [python]
+        args: []
+        exclude: '(^src/libs/database/migrations/.*|^src/libs/cookiecutter/.*)'
+        require_serial: true
+        additional_dependencies: ["ruff==0.9.0"]
+
+      - id: mypy
+        name: mypy
+        description: "Run 'mypy' for static type checking"
+        entry: mypy
+        language: python
+        types_or: [python]
+        args:
+          - "--ignore-missing-imports"
+          - "--explicit-package-bases"
+          - "--disable-error-code=call-overload"
+        require_serial: true
+        exclude: '(^src/libs/database/migrations/.*|^src/libs/cookiecutter/.*)'
+        additional_dependencies: ["mypy==1.14.1", "pydantic[mypy]"]

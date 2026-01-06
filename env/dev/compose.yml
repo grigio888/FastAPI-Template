@@ -1,0 +1,74 @@
+name: template
+
+services:
+  database:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dev
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - template_net
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    networks:
+      - template_net
+
+  backend:
+    restart: unless-stopped
+    image: template_backend
+    build:
+      context: ../../
+      dockerfile: env/dev/Dockerfile
+    stdin_open: true
+    tty: true
+    environment:
+      - ENVIRONMENT=dev
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    volumes:
+      - ../../src:/app/src
+      - ../../tests:/app/tests
+      - ../../alembic.ini:/app/alembic.ini
+      - ../../pyproject.toml:/app/pyproject.toml
+      - ../../../volumes:/vol/
+    networks:
+      - template_net
+    depends_on:
+      - database
+      - redis
+
+  celery:
+    restart: unless-stopped
+    image: template_backend
+    volumes:
+      - ../../src:/app/src
+      - ../../tests:/app/tests
+      - ../../alembic.ini:/app/alembic.ini
+      - ../../pyproject.toml:/app/pyproject.toml
+      - ../../../volumes:/vol/
+    networks:
+      - template_net
+    depends_on:
+      - backend
+    env_file:
+      - .env
+    entrypoint: celery -A src.libs.celery.celery worker -B -E --logfile=/dev/null
+
+volumes:
+  postgres_data:
+
+networks:
+  template_net:
+    driver: bridge
