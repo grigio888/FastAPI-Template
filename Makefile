@@ -79,7 +79,7 @@ exec:	## Docker - Execute a command in the API container
 
 recreate-dev:	## Docker - Recreate dev ambient
 	make down && \
-	docker volume rm -f mangagrid_postgres_data && \
+	docker volume rm -f template_postgres_data && \
 	make build && \
 	make up env=dev && \
 	make db-populate
