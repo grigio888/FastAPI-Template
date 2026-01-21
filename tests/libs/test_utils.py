@@ -13,7 +13,7 @@ import unittest
 from datetime import UTC, datetime
 from unittest.mock import patch
 
-from template.src.libs.utilities.misc import (
+from src.libs.utilities.misc import (
     clean_dict,
     generate_log_threshold,
     is_filled,

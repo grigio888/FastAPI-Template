@@ -34,35 +34,35 @@ create-new-app:	## API - Create a new app
 		--output-dir src/apps/
 
 # -- Docker commands ---------------------------------------------------------- #
-build:	## Docker - Build the API
+docker-build:	## Docker - Build the API
 	@echo "# ----------------------------------------------------------------------- #"
 	@echo "» Building the API image: (no-cache = $(if $(no-cache),true,false))"
 	@echo "# ----------------------------------------------------------------------- #"
 
 	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml build $(if $(container),$(container),) $(if $(no-cache),--no-cache)
 
-up:	## Docker - Run the API
+docker-up:	## Docker - Run the API
 	@echo "# ----------------------------------------------------------------------- #"
 	@echo "» Running the API container:"
 	@echo "# ----------------------------------------------------------------------- #"
 
 	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml up -d $(if $(container),$(container),)
 
-down:	## Docker - Stop the API
+docker-down:	## Docker - Stop the API
 	@echo "# ----------------------------------------------------------------------- #"
 	@echo "» Stopping the API container:"
 	@echo "# ----------------------------------------------------------------------- #"
 
 	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml down $(if $(container),$(container),)
 
-logs:	## Docker - Show the API container logs
+docker-logs:	## Docker - Show the API container logs
 	@echo "# ----------------------------------------------------------------------- #"
 	@echo "» Showing the API container logs:"
 	@echo "# ----------------------------------------------------------------------- #"
 
 	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml logs -f $(if $(container),$(container),)
 
-attach:	## Docker - Attach to the API container
+docker-attach:	## Docker - Attach to the API container
 	@echo "# ----------------------------------------------------------------------- #"
 	@echo "» Attaching to the API container"
 	@echo "» To exit, use Ctrl + C"
@@ -70,7 +70,7 @@ attach:	## Docker - Attach to the API container
 
 	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml attach $(if $(container),$(container),backend)
 
-exec:	## Docker - Execute a command in the API container
+docker-exec:	## Docker - Execute a command in the API container
 	@echo "# ----------------------------------------------------------------------- #"
 	@echo "» Running command in the API container: $(if $(command),$(command),bash)"
 	@echo "# ----------------------------------------------------------------------- #"
@@ -78,41 +78,41 @@ exec:	## Docker - Execute a command in the API container
 	docker compose -f env/$(if $(strip $(env)),$(env)/,dev/)compose.yml exec -it $(if $(container),$(container),backend) $(if $(command),$(command),sh)
 
 recreate-dev:	## Docker - Recreate dev ambient
-	make down && \
+	make docker-down && \
 	docker volume rm -f template_postgres_data && \
-	make build && \
-	make up env=dev && \
+	make docker-build && \
+	make docker-up env=dev && \
 	make db-populate
 
 recreate-prod:	## Docker - Recreate prod ambient
-	make build env=prod no-cache=y && \
-	make down containter="backend celery" && \
-	make up env=prod
+	make docker-build env=prod no-cache=y && \
+	make docker-down containter="backend celery" && \
+	make docker-up env=prod
 
 # -- Database commands ---------------------------------------------------------- #
 db-seed:	## Database - Seed the database with initial data
-	make exec command="python src/libs/database/seeds/__init__.py --seeds $(if $(seed),$(seed),all)"
+	make docker-exec command="python src/libs/database/seeds/__init__.py --seeds $(if $(seed),$(seed),all)"
 
 db-populate:	## Database - Populate the database with initial data
 	make db-migrate && \
 	make db-seed
 
 db-create-migration:	## Database - Create a new migration
-	make exec command="alembic revision --autogenerate -m '$(message)'"
+	make docker-exec command="alembic revision --autogenerate -m '$(message)'"
 
 db-merge-migrations:	## Database - Merge migrations
-	make exec command="alembic merge --message 'merge heads' heads"
+	make docker-exec command="alembic merge --message 'merge heads' heads"
 
 db-migrate:	## Database - Deploy pending migrations
-	make exec command="alembic upgrade heads"
+	make docker-exec command="alembic upgrade heads"
 
 db-undo-migrate:	## Database - Undo the last migration
-	make exec command="alembic downgrade $(if $(rev),$(rev),-1)"
+	make docker-exec command="alembic downgrade $(if $(rev),$(rev),-1)"
 
 db-shell:	## Database - Open a database shell
-	make exec container="database" command="psql -U postgres -d dev"
+	make docker-exec container="database" command="psql -U postgres -d dev"
 
 # -- Testing commands ---------------------------------------------------------- #
 test:	## Testing - Run the test suite
-	make exec command="coverage run -m unittest discover tests"
-	make exec command="coverage $(if $(only-report),report,xml)"
+	make docker-exec command="coverage run -m unittest discover tests"
+	make docker-exec command="coverage $(if $(only-report),report,xml)"

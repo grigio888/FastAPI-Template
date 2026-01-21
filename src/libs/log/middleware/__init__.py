@@ -11,7 +11,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 
 from src.libs.log import get_logger, setup_logging
-from template.src.libs.utilities.misc import (
+from src.libs.utilities.misc import (
     refresh_log_threshold,
     should_log,
 )

@@ -6,7 +6,7 @@ This module tests the filter functions in src/libs/filters.py.
 
 import unittest
 
-from template.src.libs.utilities.filters import apply_filter, filter_exclude, filter_only
+from src.libs.utilities.filters import apply_filter, filter_exclude, filter_only
 
 
 class TestFilters(unittest.TestCase):
