@@ -28,6 +28,10 @@ def health_checker() -> HealthCheckSchema:
     ### Health Checker.
 
     This endpoint will return the current time and timezone of the server.
+
+    #NOTE: This endpoint should be used as well to monitor the application health,
+    for example, whenever an app is throwing errors, this endpoint should descriminate
+    which app is failing by returning a non-200 status code and the reason for it.
     """
 
     current_time = datetime.now(tz=UTC)

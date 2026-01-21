@@ -6,4 +6,5 @@ exec uvicorn src.main:app \
     --app-dir /app \
     --host ${HOST} \
     --port ${PORT} \
-    --header server:HIDDEN;
+    --header server:HIDDEN \
+    --reload;

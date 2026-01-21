@@ -94,11 +94,6 @@ class UserPreferencesUpdateDataSchema(BaseModel):
         description="Language preference of the user",
         examples=[LanguageEnum.en_us, LanguageEnum.pt_br],
     )
-    show_nsfw_content: bool | None = Field(
-        None,
-        description="Show NSFW content preference of the user",
-        examples=[True, False],
-    )
 
 
 class UserUpdateDataSchema(BaseModel):
@@ -196,11 +191,6 @@ class UserPreferencesSchema(BaseModel):
         ...,
         description="Language preference of the user",
         examples=[LanguageEnum.en_us, LanguageEnum.pt_br],
-    )
-    show_nsfw_content: bool = Field(
-        ...,
-        description="Show NSFW content preference of the user",
-        examples=[True, False],
     )
 
 

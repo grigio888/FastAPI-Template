@@ -160,6 +160,8 @@ class DeclarativeBaseModel(DeclarativeBase):
         Convert the model to a dictionary.
 
         This method will convert the model to a dictionary.
+
+        #FIXME: Add circular reference handling.
         """
         data = {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
